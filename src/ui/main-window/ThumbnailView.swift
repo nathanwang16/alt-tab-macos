@@ -53,11 +53,40 @@ class ThumbnailView: NSStackView {
         windowlessIcon.toolTip = NSLocalizedString("App is running but has no open window", comment: "")
         windowlessIcon.shadow = shadow
         appIcon.shadow = shadow
-        hStackView = NSStackView(views: [appIcon, label, hiddenIcon, fullscreenIcon, minimizedIcon, spaceIcon])
-        setViews([hStackView, thumbnail, windowlessIcon], in: .leading)
+        hStackView = NSStackView(views: [appIcon    ]) //label, should be in between app icon and hidden icon
+        //hiddenIcon,
+        //fullscreenIcon,
+        //minimizedIcon,
+        //spaceIcon
+        //  setViews([hStackView, thumbnail, windowlessIcon], in: .leading)
         addWindowControls()
         addDockLabelIcon()
         setAccessibilityChildren([])
+        
+        // Add the thumbnail directly to the view hierarchy, not as an arranged subview.
+            addSubview(thumbnail, positioned: .below, relativeTo: hStackView)
+
+            // Set up the thumbnail's frame or constraints here, as needed.
+            // For example, you might want to fill the entire ThumbnailView with the thumbnail:
+            thumbnail.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                thumbnail.topAnchor.constraint(equalTo: topAnchor),
+                thumbnail.leadingAnchor.constraint(equalTo: leadingAnchor),
+                thumbnail.trailingAnchor.constraint(equalTo: trailingAnchor),
+                thumbnail.bottomAnchor.constraint(equalTo: bottomAnchor)
+            ])
+
+            // Ensure the hStackView is added above the thumbnail.
+            addSubview(hStackView, positioned: .above, relativeTo: thumbnail)
+
+            // Set up the hStackView's frame or constraints here, as needed.
+            // For example, you might want to center the hStackView within the ThumbnailView:
+            hStackView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                hStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
+                hStackView.centerYAnchor.constraint(equalTo: centerYAnchor)
+            ])
+        
     }
 
     private func addDockLabelIcon() {
