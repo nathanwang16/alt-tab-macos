@@ -2515,6 +2515,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D04BA1232AFEEFE90D5CC827 /* debug.xcconfig */;
 			buildSettings = {
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Nathan.alt-tab-macos";
 			};
 			name = Debug;
 		};
