@@ -3,7 +3,7 @@ import Cocoa
 class ThumbnailView: NSStackView {
     static let windowsControlSize = CGFloat(16)
     static let windowsControlSpacing = CGFloat(8)
-    static let highlightBackgroundColor = NSColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+    static let highlightBackgroundColor = NSColor(red: 1, green: 1, blue: 1, alpha: 0.13) // NSColor(red: 0, green: 0, blue: 0, alpha: 0.5)
     static let highlightBorderColor = NSColor.white
     var window_: Window?
     var thumbnail = NSImageView()
@@ -45,15 +45,17 @@ class ThumbnailView: NSStackView {
         layer!.backgroundColor = .clear
         layer!.borderColor = .clear
         layer!.cornerRadius = Preferences.cellCornerRadius
-        layer!.borderWidth = CGFloat(2)
+        layer!.borderWidth = CGFloat(1)
         edgeInsets = NSEdgeInsets(top: Preferences.intraCellPadding, left: Preferences.intraCellPadding, bottom: Preferences.intraCellPadding, right: Preferences.intraCellPadding)
         orientation = .vertical
-        let shadow = ThumbnailView.makeShadow(.gray)
-        thumbnail.shadow = shadow
+        let ThumbnailShadow = ThumbnailView.makeShadow(.clear) //New Part
+        let IconShadow = ThumbnailView.makeShadow(.clear)
+            // .gray
+        thumbnail.shadow = ThumbnailShadow
         windowlessIcon.toolTip = NSLocalizedString("App is running but has no open window", comment: "")
-        windowlessIcon.shadow = shadow
-        appIcon.shadow = shadow
-        hStackView = NSStackView(views: [appIcon    ]) //label, should be in between app icon and hidden icon
+        windowlessIcon.shadow = IconShadow
+        appIcon.shadow = IconShadow
+        hStackView = NSStackView(views: [appIcon]) //label, should be in between app icon and hidden icon
         //hiddenIcon,
         //fullscreenIcon,
         //minimizedIcon,
@@ -63,18 +65,30 @@ class ThumbnailView: NSStackView {
         addDockLabelIcon()
         setAccessibilityChildren([])
         
+        // Add padding constraints for the thumbnail
+
+        
+        
         // Add the thumbnail directly to the view hierarchy, not as an arranged subview.
             addSubview(thumbnail, positioned: .below, relativeTo: hStackView)
 
             // Set up the thumbnail's frame or constraints here, as needed.
             // For example, you might want to fill the entire ThumbnailView with the thumbnail:
-            thumbnail.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                thumbnail.topAnchor.constraint(equalTo: topAnchor),
-                thumbnail.leadingAnchor.constraint(equalTo: leadingAnchor),
-                thumbnail.trailingAnchor.constraint(equalTo: trailingAnchor),
-                thumbnail.bottomAnchor.constraint(equalTo: bottomAnchor)
-            ])
+//            thumbnail.translatesAutoresizingMaskIntoConstraints = false
+//            NSLayoutConstraint.activate([
+//                thumbnail.topAnchor.constraint(equalTo: topAnchor),
+//                thumbnail.leadingAnchor.constraint(equalTo: leadingAnchor),
+//                thumbnail.trailingAnchor.constraint(equalTo: trailingAnchor),
+//                thumbnail.bottomAnchor.constraint(equalTo: bottomAnchor)
+//            ])
+        
+        thumbnail.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            thumbnail.topAnchor.constraint(equalTo: topAnchor), //, constant: Preferences.intraCellPadding
+            thumbnail.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Preferences.intraCellPadding+20),
+            thumbnail.trailingAnchor.constraint(equalTo: trailingAnchor, constant: Preferences.intraCellPadding-20),
+            thumbnail.bottomAnchor.constraint(equalTo: bottomAnchor) // , constant: Preferences.intraCellPadding
+        ])
 
             // Ensure the hStackView is added above the thumbnail.
             addSubview(hStackView, positioned: .above, relativeTo: thumbnail)
@@ -157,9 +171,11 @@ class ThumbnailView: NSStackView {
                 image.size = element.thumbnailFullSize!
             }
             let (thumbnailWidth, thumbnailHeight) = ThumbnailView.thumbnailSize(element.thumbnail, screen)
-            let thumbnailSize = NSSize(width: thumbnailWidth.rounded(), height: thumbnailHeight.rounded())
+            
+            let thumbnailSize = NSSize(width: thumbnailWidth.rounded(), height: thumbnailHeight.rounded()) // The size of the snapshot image of thumbnails; should be a variable
             thumbnail.image?.size = thumbnailSize
-            thumbnail.frame.size = thumbnailSize
+            thumbnail.frame.size = NSSize(width: 800, height: 500)// thumbnailSize
+            
             // for Accessibility > "speak items under the pointer"
             thumbnail.setAccessibilityLabel(element.title)
         }
@@ -207,7 +223,7 @@ class ThumbnailView: NSStackView {
         assignIfDifferent(&windowlessIcon.isHidden, !element.isWindowlessApp || Preferences.hideThumbnails)
         if element.isWindowlessApp {
             windowlessIcon.image = appIcon.image!.copy() as! NSImage
-            windowlessIcon.image?.size = NSSize(width: 1024, height: 1024)
+            windowlessIcon.image?.size = NSSize(width: 800, height: 500)
             let (thumbnailWidth, thumbnailHeight) = ThumbnailView.thumbnailSize(windowlessIcon.image, screen)
             let windowlessIconSize = NSSize(width: thumbnailWidth, height: thumbnailHeight)
             windowlessIcon.image!.size = windowlessIconSize
@@ -272,7 +288,7 @@ class ThumbnailView: NSStackView {
     }
 
     override func draggingEntered(_ sender: NSDraggingInfo) -> NSDragOperation {
-        dragAndDropTimer = Timer.scheduledTimer(withTimeInterval: 2, repeats: false, block: { _ in
+        dragAndDropTimer = Timer.scheduledTimer(withTimeInterval: 3, repeats: false, block: { _ in
             self.mouseUpCallback()
         })
         dragAndDropTimer?.tolerance = 0.2
