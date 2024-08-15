@@ -83,11 +83,14 @@ extension AXUIElement {
 //        debugPrint(runningApp.bundleIdentifier, title, level, CGWindow.normalLevel, subrole, role, size)
 
         // Some non-windows have cgWindowId == 0 (e.g. windows of apps starting at login with the checkbox "Hidden" checked)
-        return wid != 0 && size != nil && (
+        return wid != 0 &&
+                // Finder's file copy dialogs are wide but < 100 height (see https://github.com/lwouis/alt-tab-macos/issues/1466)
+                // Sonoma introduced a bug: a caps-lock indicator shows as a small window. We try to hide it by filtering out tiny windows
+                size != nil && (size!.width > 100 || size!.height > 100) && (
             (
                 books(runningApp) ||
                     keynote(runningApp) ||
-                    preview(runningApp) ||
+                    preview(runningApp, subrole) ||
                     iina(runningApp) ||
                     openFlStudio(runningApp, title) ||
                     crossoverWindow(runningApp, role, subrole, level) ||
@@ -144,10 +147,10 @@ extension AXUIElement {
         return runningApp.bundleIdentifier == "com.apple.iWork.Keynote"
     }
 
-    private static func preview(_ runningApp: NSRunningApplication) -> Bool {
+    private static func preview(_ runningApp: NSRunningApplication, _ subrole: String?) -> Bool {
         // when opening multiple documents at once with apple Preview,
         // one of the window will have level == 1 for some reason
-        return runningApp.bundleIdentifier == "com.apple.Preview"
+        return runningApp.bundleIdentifier == "com.apple.Preview" && [kAXStandardWindowSubrole, kAXDialogSubrole].contains(subrole)
     }
 
     private static func openFlStudio(_ runningApp: NSRunningApplication, _ title: String?) -> Bool {

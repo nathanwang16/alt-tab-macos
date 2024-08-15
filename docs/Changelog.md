@@ -1,5 +1,64 @@
 # Release notes
 
+# [6.72.0](https://github.com/lwouis/alt-tab-macos/compare/v6.71.0...v6.72.0) (2024-07-14)
+
+
+### Bug Fixes
+
+* preferences window quit button supports right-to-left languages ([d3dfd54](https://github.com/lwouis/alt-tab-macos/commit/d3dfd54)), closes [#3487](https://github.com/lwouis/alt-tab-macos/issues/3487)
+
+
+### Features
+
+* don't show caps-lock indicator as a window (closes [#3171](https://github.com/lwouis/alt-tab-macos/issues/3171)) ([2e15732](https://github.com/lwouis/alt-tab-macos/commit/2e15732))
+* improve da/he localizations ([3d98b64](https://github.com/lwouis/alt-tab-macos/commit/3d98b64))
+
+# [6.71.0](https://github.com/lwouis/alt-tab-macos/compare/v6.70.1...v6.71.0) (2024-07-06)
+
+
+### Bug Fixes
+
+* restore default cmd+tab shortcut when alt-tab crashes ([2c47b4e](https://github.com/lwouis/alt-tab-macos/commit/2c47b4e))
+* showing permissions window would crash on macos < 10.15 ([bb5215c](https://github.com/lwouis/alt-tab-macos/commit/bb5215c)), closes [#3437](https://github.com/lwouis/alt-tab-macos/issues/3437)
+* traffic light icons could appear half-transparent (closes [#2892](https://github.com/lwouis/alt-tab-macos/issues/2892)) ([1eef1e0](https://github.com/lwouis/alt-tab-macos/commit/1eef1e0))
+
+
+### Features
+
+* improve fr/he/it/ja/pt/sv localizations ([35521a5](https://github.com/lwouis/alt-tab-macos/commit/35521a5))
+* show de-fullscreen button on fullscreen windows ([ad1e8d0](https://github.com/lwouis/alt-tab-macos/commit/ad1e8d0))
+
+## [6.70.1](https://github.com/lwouis/alt-tab-macos/compare/v6.70.0...v6.70.1) (2024-06-01)
+
+
+### Bug Fixes
+
+* prevent crash introduced in v6.70.0 (closes [#3392](https://github.com/lwouis/alt-tab-macos/issues/3392)) ([e16a3d4](https://github.com/lwouis/alt-tab-macos/commit/e16a3d4))
+
+# [6.70.0](https://github.com/lwouis/alt-tab-macos/compare/v6.69.0...v6.70.0) (2024-05-29)
+
+
+### Bug Fixes
+
+* detect safari fullscreen windows better (closes [#3384](https://github.com/lwouis/alt-tab-macos/issues/3384)) ([c3006c6](https://github.com/lwouis/alt-tab-macos/commit/c3006c6))
+
+
+### Features
+
+* add utm-app to default blacklist ([523bcbb](https://github.com/lwouis/alt-tab-macos/commit/523bcbb))
+
+# [6.69.0](https://github.com/lwouis/alt-tab-macos/compare/v6.68.0...v6.69.0) (2024-05-12)
+
+
+### Bug Fixes
+
+* only show standard windows of preview.app (closes [#3351](https://github.com/lwouis/alt-tab-macos/issues/3351)) ([6231977](https://github.com/lwouis/alt-tab-macos/commit/6231977))
+
+
+### Features
+
+* update fi, ja, ko, pt-br, th localizations ([14d287a](https://github.com/lwouis/alt-tab-macos/commit/14d287a))
+
 # [6.68.0](https://github.com/lwouis/alt-tab-macos/compare/v6.67.0...v6.68.0) (2024-04-03)
 
 
